@@ -78,7 +78,7 @@ install -m 0600 /var/lib/lnurl-mint/mint.db "$backup/mint.db"
 sqlite3 "$backup/mint.db" 'PRAGMA integrity_check;' | grep -qx ok || fail 'mint backup integrity check failed'
 
 uv sync --frozen --project "$work/repo"
-uv run --project "$work/repo" pytest -q
+uv run --project "$work/repo" pytest -q "$work/repo/tests"
 
 new_dir="$APP_DIR.$stamp"
 rsync -a --delete --exclude .git --exclude .venv "$work/repo/" "$new_dir/"
