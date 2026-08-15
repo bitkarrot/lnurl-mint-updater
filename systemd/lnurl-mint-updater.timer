@@ -1,0 +1,11 @@
+[Unit]
+Description=Run lnurl-mint updater every 24 hours
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=24h
+Persistent=true
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target
