@@ -108,7 +108,7 @@ mv "$APP_DIR" "$old_dir"
 mv "$new_dir" "$APP_DIR"
 chown -R lnurl-mint:lnurl-mint "$APP_DIR"
 
-git -C "$work/repo" rev-parse "$remote" > "$STATE_DIR/deployed-revision"
+git -c safe.directory="$work/repo" -C "$work/repo" rev-parse "$remote" > "$STATE_DIR/deployed-revision"
 systemctl start "$SERVICE"
 trap - EXIT
 sleep 3
