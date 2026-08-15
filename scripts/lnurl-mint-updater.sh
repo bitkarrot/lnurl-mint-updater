@@ -88,6 +88,7 @@ runuser -u lnurl-mint -- env HOME=/var/lib/lnurl-mint UV_CACHE_DIR="$work/cache"
   uv run --project "$work/repo" pytest -q "$work/repo/tests"
 
 new_dir="$APP_DIR.$stamp"
+old_dir="$APP_DIR.previous"
 rsync -a --delete --exclude .git --exclude .venv "$work/repo/" "$new_dir/"
 rsync -a --delete "$work/repo/.venv/" "$new_dir/.venv/"
 if [[ -f "$work/repo/uvicorn-log-config.json" ]]; then
@@ -95,12 +96,13 @@ if [[ -f "$work/repo/uvicorn-log-config.json" ]]; then
 elif [[ -f "$APP_DIR/uvicorn-log-config.json" ]]; then
   # This deployment-local file is not tracked by upstream.
   install -m 0644 -o lnurl-mint -g lnurl-mint "$APP_DIR/uvicorn-log-config.json" "$new_dir/uvicorn-log-config.json"
+elif [[ -f "$old_dir/uvicorn-log-config.json" ]]; then
+  install -m 0644 -o lnurl-mint -g lnurl-mint "$old_dir/uvicorn-log-config.json" "$new_dir/uvicorn-log-config.json"
 else
   fail 'uvicorn-log-config.json is missing from upstream and current deployment'
 fi
 chown -R lnurl-mint:lnurl-mint "$new_dir"
 chmod 0750 "$new_dir"
-old_dir="$APP_DIR.previous"
 rm -rf "$old_dir"
 mv "$APP_DIR" "$old_dir"
 mv "$new_dir" "$APP_DIR"
