@@ -14,7 +14,7 @@ LOG_DIR=${LOG_DIR:-/var/log/lnurl-mint-updater}
 SERVICE=${SERVICE:-lnurl-mint.service}
 MODEL_ENDPOINT=${MODEL_ENDPOINT:-https://llm.int.exe.xyz/v1/chat/completions}
 MODEL=${MODEL:-fireworks/glm-5p2}
-AUTO_DEPLOY=${AUTO_DEPLOY:-false}
+AUTO_DEPLOY=${AUTO_DEPLOY:-true}
 
 mkdir -p "$STATE_DIR" "$LOG_DIR"
 # Allow the non-root test user to traverse the staging directory only.

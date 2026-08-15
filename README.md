@@ -15,6 +15,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now lnurl-mint-updater.timer
 ```
 
-`AUTO_DEPLOY=false` is the safe default. Deployment backs up and integrity-checks
+`AUTO_DEPLOY=true` is the default for this rapid-testing setup. Deployment backs up and integrity-checks
 the mint database, runs tests, swaps the application, restarts it, checks the
 health endpoint, and retains a rollback directory.
