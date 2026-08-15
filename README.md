@@ -1,0 +1,1 @@
+# lnurl-mint-updater
