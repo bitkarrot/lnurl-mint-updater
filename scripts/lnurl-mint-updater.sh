@@ -17,6 +17,9 @@ MODEL=${MODEL:-fireworks/glm-5p2}
 AUTO_DEPLOY=${AUTO_DEPLOY:-false}
 
 mkdir -p "$STATE_DIR" "$LOG_DIR"
+# Allow the non-root test user to traverse the staging directory only.
+chown root:lnurl-mint "$STATE_DIR"
+chmod 0710 "$STATE_DIR"
 exec 9>"$STATE_DIR/lock"
 flock -n 9 || exit 0
 
