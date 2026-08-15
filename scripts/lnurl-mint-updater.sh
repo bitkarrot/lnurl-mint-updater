@@ -78,7 +78,11 @@ install -m 0600 /var/lib/lnurl-mint/mint.db "$backup/mint.db"
 sqlite3 "$backup/mint.db" 'PRAGMA integrity_check;' | grep -qx ok || fail 'mint backup integrity check failed'
 
 uv sync --frozen --project "$work/repo"
-uv run --project "$work/repo" pytest -q "$work/repo/tests"
+# Tests execute as the application user, not root: upstream tests are untrusted code.
+install -d -o lnurl-mint -g lnurl-mint -m 0750 "$work/cache"
+chown -R lnurl-mint:lnurl-mint "$work"
+runuser -u lnurl-mint -- env HOME=/var/lib/lnurl-mint UV_CACHE_DIR="$work/cache" \
+  uv run --project "$work/repo" pytest -q "$work/repo/tests"
 
 new_dir="$APP_DIR.$stamp"
 rsync -a --delete --exclude .git --exclude .venv "$work/repo/" "$new_dir/"
